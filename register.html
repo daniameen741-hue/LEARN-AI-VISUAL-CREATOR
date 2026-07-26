@@ -397,11 +397,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;o
     body+='&jobTitle='+encodeURIComponent(data.jobTitle||'');
     body+='&industry='+encodeURIComponent(data.industry||'');
     body+='&services='+encodeURIComponent(data.services||'');
-    body+='&about='+encodeURIComponent(data.about||'');
+    body+='&about='+encodeURIComponent(data.aboutSelf||'');
     body+='&experience='+encodeURIComponent(data.experience||'');
     body+='&referral='+encodeURIComponent(data.referral||'');
-    body+='&budget='+encodeURIComponent(data.budget||'');
-    body+='&goals='+encodeURIComponent(data.goals||'');
+    body+='&goals='+encodeURIComponent(data.motivation||'');
     data.learn.forEach(function(l){body+='&learn='+encodeURIComponent(l)});
 
     fetch(SCRIPT_URL,{
