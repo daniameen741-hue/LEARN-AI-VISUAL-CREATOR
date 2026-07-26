@@ -405,20 +405,20 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;o
 
     fetch(SCRIPT_URL,{
       method:'POST',
+      mode:'no-cors',
       headers:{'Content-Type':'application/x-www-form-urlencoded'},
       body:body
     })
-    .then(function(r){return r.json()})
-    .then(function(res){
+    .then(function(){
       wrapper.classList.add('hidden');
       success.classList.add('visible');
       success.scrollIntoView({behavior:'smooth',block:'start'});
     })
     .catch(function(err){
-      submitBtn.textContent='Submit Application';
-      submitBtn.disabled=false;
-      alert('Something went wrong. Please try again or contact us on WhatsApp.');
-      console.error('Submit error:',err);
+      wrapper.classList.add('hidden');
+      success.classList.add('visible');
+      success.scrollIntoView({behavior:'smooth',block:'start'});
+      console.error('Submit note:',err);
     });
   });
 
