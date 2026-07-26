@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI VISUAL CREATOR — From Creative Thinking to AI-Powered Visual Production</title>
+<meta name="description" content="An 8-week practical creative learning experience designed to help you transform ideas into professional AI-powered visual content.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0A;
+  --surface:#141414;
+  --surface-elevated:#1A1A1A;
+  --surface-glass:rgba(255,255,255,0.03);
+  --fg:#F0F0F0;
+  --fg-dim:#9A9A9A;
+  --muted:#6B6B6B;
+  --border:rgba(255,255,255,0.06);
+  --border-strong:rgba(255,255,255,0.12);
+  --accent:#E8652A;
+  --accent-glow:rgba(232,101,42,0.15);
+  --accent-hover:#F07030;
+  --font-display:'Clash Display',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --max-w:1200px;
+  --max-w-narrow:800px;
+  --section-gap:clamp(80px,10vw,140px);
+  --radius:16px;
+  --radius-sm:10px;
+  --radius-xs:6px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+ul,ol{list-style:none}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.08;letter-spacing:-0.02em}
+.section{padding:var(--section-gap) 24px}
+.section-inner{max-width:var(--max-w);margin:0 auto}
+.section-label{font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.section-title{font-size:clamp(32px,4.5vw,52px);margin-bottom:20px;max-width:800px}
+.section-subtitle{font-size:clamp(16px,1.8vw,19px);color:var(--fg-dim);line-height:1.65;max-width:600px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 32px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:14px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;transition:all 0.3s cubic-bezier(0.22,1,0.36,1);min-height:48px}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 0 0 var(--accent-glow)}
+.btn-primary:hover{background:var(--accent-hover);box-shadow:0 8px 32px var(--accent-glow);transform:translateY(-1px)}
+.btn-outline{border:1px solid var(--border-strong);color:var(--fg)}
+.btn-outline:hover{border-color:var(--fg-dim);background:rgba(255,255,255,0.04)}
+.btn-sm{padding:10px 22px;font-size:12px;min-height:40px}
+.glass-card{background:var(--surface-glass);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:all 0.4s cubic-bezier(0.22,1,0.36,1)}
+.glass-card:hover{border-color:var(--border-strong);background:rgba(255,255,255,0.05)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1),transform 0.7s cubic-bezier(0.22,1,0.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+/* Grain overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── NAVBAR ── */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px;height:72px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s cubic-bezier(0.22,1,0.36,1)}
+.navbar.scrolled{background:rgba(10,10,10,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-0.01em;white-space:nowrap}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--fg-dim);letter-spacing:0.01em;transition:color 0.2s}
+.nav-links a:hover{color:var(--fg)}
+.nav-cta .btn{padding:10px 24px;font-size:12px}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;width:28px;padding:4px 0}
+.nav-hamburger span{display:block;width:100%;height:1.5px;background:var(--fg);transition:all 0.3s;border-radius:1px}
+.nav-hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.nav-hamburger.active span:nth-child(2){opacity:0}
+.nav-hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;bottom:0;background:rgba(10,10,10,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:999;padding:40px 24px;flex-direction:column;gap:0}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:var(--font-display);font-size:28px;font-weight:500;padding:16px 0;border-bottom:1px solid var(--border);display:block}
+.mobile-menu .btn{margin-top:32px;width:100%;justify-content:center}
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none}
+  .nav-hamburger{display:flex}
+}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:20%;left:50%;width:600px;height:600px;transform:translateX(-50%);background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none;opacity:0.5}
+.hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:32px}
+.hero-title{font-size:clamp(42px,7vw,88px);line-height:1.02;letter-spacing:-0.03em;margin-bottom:32px;max-width:900px}
+.hero-title .line-accent{color:var(--accent)}
+.hero-sub{font-size:clamp(16px,1.8vw,20px);color:var(--fg-dim);line-height:1.65;max-width:540px;margin-bottom:48px}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.hero-meta{position:absolute;bottom:40px;left:24px;right:24px;display:flex;justify-content:center;gap:48px;opacity:0.3}
+.hero-meta-item{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-family:var(--font-body);font-weight:500}
+
+/* Floating elements */
+.hero-float{position:absolute;pointer-events:none;border:1px solid var(--border);border-radius:var(--radius-xs);padding:8px 14px;font-size:11px;color:var(--muted);letter-spacing:0.04em;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);background:rgba(10,10,10,0.5);animation:float 6s ease-in-out infinite}
+.hero-float:nth-child(1){top:18%;left:8%;animation-delay:0s}
+.hero-float:nth-child(2){top:25%;right:10%;animation-delay:1.5s}
+.hero-float:nth-child(3){bottom:22%;left:12%;animation-delay:3s}
+.hero-float:nth-child(4){bottom:30%;right:8%;animation-delay:4.5s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+@media(max-width:768px){
+  .hero{min-height:90vh;padding:100px 20px 60px}
+  .hero-meta{display:none}
+  .hero-float{display:none}
+}
+
+/* ── POSITIONING ── */
+.positioning{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.positioning-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;border-radius:var(--radius);overflow:hidden}
+.positioning-card{padding:40px 36px;background:var(--bg)}
+.positioning-card-label{font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.positioning-card:nth-child(1) .positioning-card-label{color:var(--muted)}
+.positioning-card:nth-child(2) .positioning-card-label{color:var(--accent)}
+.positioning-card ul{display:flex;flex-direction:column;gap:14px}
+.positioning-card li{font-size:15px;color:var(--fg-dim);padding-left:20px;position:relative}
+.positioning-card li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%}
+.positioning-card:nth-child(1) li::before{background:var(--muted)}
+.positioning-card:nth-child(2) li::before{background:var(--accent)}
+@media(max-width:768px){
+  .positioning-grid{grid-template-columns:1fr}
+}
+
+/* ── CURRICULUM GRID ── */
+.curriculum-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px;margin-top:48px;border-radius:var(--radius);overflow:hidden}
+.curriculum-item{padding:36px 32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:all 0.4s cubic-bezier(0.22,1,0.36,1)}
+.curriculum-item:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.curriculum-num{font-family:var(--font-display);font-size:48px;font-weight:600;color:var(--accent);opacity:0.25;line-height:1;margin-bottom:8px}
+.curriculum-name{font-family:var(--font-display);font-size:20px;font-weight:600;letter-spacing:-0.01em;margin-bottom:12px}
+.curriculum-desc{font-size:14px;color:var(--fg-dim);line-height:1.6}
+@media(max-width:640px){
+  .curriculum-grid{grid-template-columns:1fr}
+}
+
+/* ── 8-WEEK TIMELINE ── */
+.timeline{position:relative;margin-top:48px}
+.timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:var(--border)}
+.timeline-item{position:relative;padding-left:56px;padding-bottom:48px}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-dot{position:absolute;left:13px;top:4px;width:15px;height:15px;border-radius:50%;border:2px solid var(--accent);background:var(--bg)}
+.timeline-item.active .timeline-dot{background:var(--accent)}
+.timeline-week{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.timeline-title{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.01em;margin-bottom:12px}
+.timeline-topics{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.timeline-topic{font-size:12px;padding:5px 12px;background:var(--surface-glass);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--fg-dim)}
+.timeline-project{font-size:14px;color:var(--fg-dim);padding:14px 18px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border);margin-top:12px}
+.timeline-project strong{color:var(--fg);font-weight:500}
+@media(max-width:640px){
+  .timeline::before{left:14px}
+  .timeline-item{padding-left:44px}
+  .timeline-dot{left:7px}
+}
+
+/* ── LEARNING METHOD ── */
+.method-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:48px;border-radius:var(--radius);overflow:hidden}
+.method-card{padding:40px 28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center;transition:all 0.4s cubic-bezier(0.22,1,0.36,1)}
+.method-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.method-icon{font-family:var(--font-display);font-size:48px;font-weight:600;color:var(--accent);opacity:0.3;margin-bottom:16px}
+.method-name{font-family:var(--font-display);font-size:20px;font-weight:600;letter-spacing:-0.01em;margin-bottom:10px}
+.method-desc{font-size:14px;color:var(--fg-dim);line-height:1.6}
+@media(max-width:768px){
+  .method-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .method-grid{grid-template-columns:1fr}
+}
+
+/* ── WEEKLY EXPERIENCE ── */
+.weekly-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:48px;border-radius:var(--radius);overflow:hidden}
+.weekly-card{padding:32px 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:all 0.3s}
+.weekly-card:hover{border-color:var(--border-strong)}
+.weekly-day{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.weekly-title{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-0.01em;margin-bottom:10px}
+.weekly-desc{font-size:14px;color:var(--fg-dim);line-height:1.55}
+.weekly-stat{margin-top:24px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:24px}
+.weekly-stat span{font-size:12px;color:var(--muted);letter-spacing:0.04em}
+.weekly-stat strong{color:var(--fg);font-weight:600}
+@media(max-width:768px){
+  .weekly-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .weekly-grid{grid-template-columns:1fr}
+}
+
+/* ── PROJECTS ── */
+.projects-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+.project-card{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);background:var(--surface);transition:all 0.4s cubic-bezier(0.22,1,0.36,1);aspect-ratio:16/10}
+.project-card:hover{border-color:var(--border-strong);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.project-visual{position:absolute;inset:0;background:linear-gradient(135deg,var(--surface-elevated) 0%,var(--surface) 100%);display:flex;align-items:center;justify-content:center}
+.project-visual-num{font-family:var(--font-display);font-size:64px;font-weight:700;color:var(--accent);opacity:0.08}
+.project-info{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(0deg,rgba(10,10,10,0.95) 0%,transparent 100%)}
+.project-tag{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.project-name{font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.project-desc{font-size:13px;color:var(--fg-dim);margin-top:6px;line-height:1.5;display:none}
+.project-card:hover .project-desc{display:block}
+@media(max-width:1024px){
+  .projects-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .projects-grid{grid-template-columns:1fr}
+}
+
+/* ── PORTFOLIO ── */
+.portfolio-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;align-items:center}
+.portfolio-steps{display:flex;flex-direction:column;gap:12px}
+.portfolio-step{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface-glass);transition:all 0.3s}
+.portfolio-step:hover{border-color:var(--border-strong);background:rgba(255,255,255,0.04)}
+.portfolio-step-num{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--accent);min-width:24px}
+.portfolio-step-text{font-size:15px;color:var(--fg-dim)}
+.portfolio-preview{border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;aspect-ratio:4/3;background:var(--surface);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;padding:1px}
+.portfolio-preview-cell{background:var(--surface-elevated);border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);letter-spacing:0.04em}
+@media(max-width:768px){
+  .portfolio-layout{grid-template-columns:1fr}
+}
+
+/* ── COURSE DETAILS / PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+.pricing-item{padding:28px 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center}
+.pricing-value{font-family:var(--font-display);font-size:28px;font-weight:600;letter-spacing:-0.02em;margin-bottom:4px}
+.pricing-value.accent{color:var(--accent)}
+.pricing-label{font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-dim)}
+.pricing-highlight{margin-top:48px;padding:48px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center}
+.pricing-highlight-value{font-family:var(--font-display);font-size:clamp(36px,5vw,56px);font-weight:700;letter-spacing:-0.02em;color:var(--accent);margin-bottom:8px}
+.pricing-highlight-label{font-size:15px;color:var(--fg-dim);margin-bottom:32px}
+@media(max-width:768px){
+  .pricing-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .pricing-grid{grid-template-columns:1fr}
+}
+
+/* ── CONTACT ── */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;align-items:start}
+.contact-info{display:flex;flex-direction:column;gap:24px}
+.contact-phone{font-family:var(--font-display);font-size:clamp(28px,4vw,42px);font-weight:600;letter-spacing:-0.02em}
+.contact-card{padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center}
+.contact-card p{font-size:15px;color:var(--fg-dim);margin-bottom:24px;line-height:1.6}
+@media(max-width:768px){
+  .contact-layout{grid-template-columns:1fr}
+}
+
+/* ── FAQ ── */
+.faq-list{margin-top:48px;max-width:var(--max-w-narrow)}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-question{width:100%;display:flex;justify-content:space-between;align-items:center;padding:24px 0;font-family:var(--font-display);font-size:18px;font-weight:500;text-align:left;letter-spacing:-0.01em;color:var(--fg);cursor:pointer;transition:color 0.2s}
+.faq-question:hover{color:var(--accent)}
+.faq-icon{font-size:24px;color:var(--muted);transition:transform 0.3s;flex-shrink:0;margin-left:16px}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.22,1,0.36,1)}
+.faq-item.open .faq-answer{max-height:400px}
+.faq-answer-inner{padding:0 0 24px;font-size:15px;color:var(--fg-dim);line-height:1.65}
+
+/* ── FINAL CTA ── */
+.final-cta{text-align:center;padding:clamp(80px,12vw,160px) 24px;position:relative;overflow:hidden}
+.final-cta::before{content:'';position:absolute;top:50%;left:50%;width:500px;height:500px;transform:translate(-50%,-50%);background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none;opacity:0.4}
+.final-cta .section-title{margin:0 auto 16px}
+.final-cta .section-subtitle{margin:0 auto 40px;text-align:center}
+.final-cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ── FOOTER ── */
+.footer{border-top:1px solid var(--border);padding:48px 24px}
+.footer-inner{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
+.footer-brand p{font-size:14px;color:var(--fg-dim);margin-top:12px;line-height:1.6}
+.footer-col-title{font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--fg);margin-bottom:16px}
+.footer-col a{display:block;font-size:14px;color:var(--fg-dim);padding:4px 0;transition:color 0.2s}
+.footer-col a:hover{color:var(--fg)}
+.footer-bottom{max-width:var(--max-w);margin:32px auto 0;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+@media(max-width:768px){
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .footer-inner{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" data-od-id="navbar" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="AI VISUAL CREATOR home">AI VISUAL <span>CREATOR</span></a>
+  <div class="nav-links">
+    <a href="#program">Program</a>
+    <a href="#curriculum">Curriculum</a>
+    <a href="#projects">Projects</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-cta">
+    <a href="register.html" class="btn btn-primary btn-sm">Join the Program</a>
+  </div>
+  <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" data-od-id="mobile-menu" role="dialog" aria-label="Mobile navigation">
+  <a href="#program">Program</a>
+  <a href="#curriculum">Curriculum</a>
+  <a href="#projects">Projects</a>
+  <a href="#faq">FAQ</a>
+  <a href="register.html" class="btn btn-primary">Join the Program</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" data-od-id="hero">
+  <div class="hero-float" aria-hidden="true">f/2.8 · 1/125s · ISO 400</div>
+  <div class="hero-float" aria-hidden="true">--style raw · --ar 16:9</div>
+  <div class="hero-float" aria-hidden="true">Color Grade: Cinematic Warm</div>
+  <div class="hero-float" aria-hidden="true">Shot 04 · Medium Close-Up</div>
+
+  <p class="hero-eyebrow reveal">8-Week Creative Program</p>
+  <h1 class="hero-title reveal reveal-delay-1">AI CAN GENERATE IMAGES.<br><span class="line-accent">BUT CAN YOU<br>CREATE IDEAS?</span></h1>
+  <p class="hero-sub reveal reveal-delay-2">The future of visual content isn't about knowing more tools. It's about knowing how to think, design, direct, generate, and create.</p>
+  <div class="hero-actions reveal reveal-delay-3">
+    <a href="register.html" class="btn btn-primary">Apply for the Program</a>
+    <a href="#curriculum" class="btn btn-outline">Explore the Curriculum</a>
+  </div>
+  <div class="hero-meta" aria-hidden="true">
+    <span class="hero-meta-item">Design</span>
+    <span class="hero-meta-item">Photography</span>
+    <span class="hero-meta-item">AI Production</span>
+    <span class="hero-meta-item">Cinematography</span>
+    <span class="hero-meta-item">Portfolio</span>
+  </div>
+</section>
+
+<!-- POSITIONING -->
+<section class="section positioning" data-od-id="positioning">
+  <div class="section-inner">
+    <p class="section-label reveal">Why This Program</p>
+    <h2 class="section-title reveal">AI IS THE TOOL.<br>CREATIVE THINKING IS THE SKILL.</h2>
+    <p class="section-subtitle reveal">Anyone can learn to press a button. The real skill is understanding what to create, why it works, how to direct it, and how to turn an idea into a complete visual experience.</p>
+    <div class="positioning-grid reveal">
+      <div class="positioning-card">
+        <p class="positioning-card-label">Random AI User</p>
+        <ul>
+          <li>Random prompts</li>
+          <li>Random results</li>
+          <li>No visual direction</li>
+          <li>No consistency</li>
+          <li>No portfolio</li>
+        </ul>
+      </div>
+      <div class="positioning-card">
+        <p class="positioning-card-label">AI Visual Creator</p>
+        <ul>
+          <li>Creative concepts</li>
+          <li>Visual direction</li>
+          <li>Controlled generation</li>
+          <li>Complete campaigns</li>
+          <li>Portfolio-ready projects</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM GRID -->
+<section class="section" data-od-id="curriculum" id="curriculum">
+  <div class="section-inner">
+    <p class="section-label reveal">What You'll Learn</p>
+    <h2 class="section-title reveal">ONE CREATIVE SYSTEM.<br>MULTIPLE CREATIVE DISCIPLINES.</h2>
+    <div class="curriculum-grid">
+      <div class="curriculum-item glass-card reveal">
+        <div class="curriculum-num">01</div>
+        <h3 class="curriculum-name">Design</h3>
+        <p class="curriculum-desc">Graphic design principles, composition, typography, hierarchy and visual communication.</p>
+      </div>
+      <div class="curriculum-item glass-card reveal reveal-delay-1">
+        <div class="curriculum-num">02</div>
+        <h3 class="curriculum-name">Color</h3>
+        <p class="curriculum-desc">Color theory, color palettes, visual moods and cinematic color direction.</p>
+      </div>
+      <div class="curriculum-item glass-card reveal reveal-delay-2">
+        <div class="curriculum-num">03</div>
+        <h3 class="curriculum-name">Photography</h3>
+        <p class="curriculum-desc">Composition, lighting, perspective, camera language and visual storytelling.</p>
+      </div>
+      <div class="curriculum-item glass-card reveal reveal-delay-3">
+        <div class="curriculum-num">04</div>
+        <h3 class="curriculum-name">Cinematography</h3>
+        <p class="curriculum-desc">Shot design, camera movement, lighting, motion and cinematic storytelling.</p>
+      </div>
+      <div class="curriculum-item glass-card reveal">
+        <div class="curriculum-num">05</div>
+        <h3 class="curriculum-name">AI</h3>
+        <p class="curriculum-desc">Prompt engineering, image generation, video generation and AI-powered creative workflows.</p>
+      </div>
+      <div class="curriculum-item glass-card reveal reveal-delay-1">
+        <div class="curriculum-num">06</div>
+        <h3 class="curriculum-name">Production</h3>
+        <p class="curriculum-desc">Image retouching, social media content, voiceover, websites and presentations.</p>
+      </div>
+      <div class="curriculum-item glass-card reveal reveal-delay-2">
+        <div class="curriculum-num">07</div>
+        <h3 class="curriculum-name">Portfolio</h3>
+        <p class="curriculum-desc">Case studies, project documentation and professional presentation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8-WEEK PROGRAM -->
+<section class="section" data-od-id="program" id="program" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <p class="section-label reveal">The Curriculum</p>
+    <h2 class="section-title reveal">8 WEEKS.<br>ONE COMPLETE CREATIVE JOURNEY.</h2>
+    <div class="timeline reveal">
+      <div class="timeline-item active">
+        <div class="timeline-dot"></div>
+        <p class="timeline-week">Week 01</p>
+        <h3 class="timeline-title">Creative Foundations</h3>
+        <div class="timeline-topics">
+          <span class="timeline-topic">Basics of Design 01</span>
+          <span class="timeline-topic">Color Theory 01</span>
+          <span class="timeline-topic">Introduction to AI Prompting</span>
+          <span class="timeline-topic">Visual Case Study</span>
+        </div>
+        <div class="timeline-project"><strong>Project:</strong> Create a visual concept using design principles and AI.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-week">Week 02</p>
+        <h3 class="timeline-title">Design Thinking & AI Exploration</h3>
+        <div class="timeline-topics">
+          <span class="timeline-topic">Basics of Design 02</span>
+          <span class="timeline-topic">Color Theory 02</span>
+          <span class="timeline-topic">Exploring AI Tools</span>
+          <span class="timeline-topic">Visual Case Study</span>
+        </div>
+        <div class="timeline-project"><strong>Project:</strong> Explore multiple AI tools and create one concept through different creative workflows.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-week">Week 03</p>
+        <h3 class="timeline-title">Photography & Visual Composition</h3>
+        <div class="timeline-topics">
+          <span class="timeline-topic">Photography 01</span>
+          <span class="timeline-topic">Color Palettes 01</span>
+          <span class="timeline-topic">Design Themes</span>
+          <span class="timeline-topic">Visual Composition</span>
+        </div>
+        <div class="timeline-project"><strong>Project:</strong> Create a complete visual moodboard and photographic concept.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-week">Week 04</p>
+        <h3 class="timeline-title">Visual Direction & AI Analysis</h3>
+        <div class="timeline-topics">
+          <span class="timeline-topic">Photography 02</span>
+          <span class="timeline-topic">Color Palettes 02</span>
+          <span class="timeline-topic">Lighting Direction</span>
+          <span class="timeline-topic">AI Reverse Engineering</span>
+        </div>
+        <div class="timeline-project"><strong>Project:</strong> Analyze a professional visual and recreate its visual logic using AI.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-week">Week 05</p>
+        <h3 class="timeline-title">AI Visual Production 01</h3>
+        <div class="timeline-topics">
+          <span class="timeline-topic">AI Image Generation</span>
+          <span class="timeline-topic">AI Cinematography</span>
+          <span class="timeline-topic">Image Retouching 01</span>
+          <span class="timeline-topic">Video Generation</span>
+        </div>
+        <div class="timeline-project"><strong>Project:</strong> Create a commercial AI photoshoot.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-week">Week 06</p>
+        <h3 class="timeline-title">AI Visual Production 02</h3>
+        <div class="timeline-topics">
+          <span class="timeline-topic">Advanced Image Generation</span>
+          <span class="timeline-topic">Character Consistency</span>
+          <span class="timeline-topic">AI Video Generation 02</span>
+          <span class="timeline-topic">AI Social Media Content</span>
+        </div>
+        <div class="timeline-project"><strong>Project:</strong> Create a complete AI-powered advertising campaign.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-week">Week 07</p>
+        <h3 class="timeline-title">The Complete AI Creative Workflow</h3>
+        <div class="timeline-topics">
+          <span class="timeline-topic">AI Voiceover & Audio</span>
+          <span class="timeline-topic">AI Website Creation</span>
+          <span class="timeline-topic">AI Presentation Design</span>
+          <span class="timeline-topic">Creative Workflow Integration</span>
+        </div>
+        <div class="timeline-project"><strong>Project:</strong> Build a complete creative ecosystem — Brand, Visual Identity, Campaign, Video, Voiceover, Website, Presentation.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-week">Week 08</p>
+        <h3 class="timeline-title">Final Project & Portfolio</h3>
+        <div class="timeline-topics">
+          <span class="timeline-topic">Final Assignment</span>
+          <span class="timeline-topic">Project Development</span>
+          <span class="timeline-topic">Mentorship</span>
+          <span class="timeline-topic">Final Presentation</span>
+        </div>
+        <div class="timeline-project"><strong>Outcome:</strong> Students leave with portfolio-ready creative work and a complete understanding of AI-powered visual production.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING METHOD -->
+<section class="section" data-od-id="method">
+  <div class="section-inner">
+    <p class="section-label reveal">The Method</p>
+    <h2 class="section-title reveal">LEARN.<br>EXPLORE.<br>APPLY.<br>CURATE.</h2>
+    <div class="method-grid">
+      <div class="method-card reveal">
+        <div class="method-icon">01</div>
+        <h3 class="method-name">Learn</h3>
+        <p class="method-desc">Understand the creative theory.</p>
+      </div>
+      <div class="method-card reveal reveal-delay-1">
+        <div class="method-icon">02</div>
+        <h3 class="method-name">Explore</h3>
+        <p class="method-desc">Study references, tools and workflows.</p>
+      </div>
+      <div class="method-card reveal reveal-delay-2">
+        <div class="method-icon">03</div>
+        <h3 class="method-name">Apply</h3>
+        <p class="method-desc">Create practical projects.</p>
+      </div>
+      <div class="method-card reveal reveal-delay-3">
+        <div class="method-icon">04</div>
+        <h3 class="method-name">Curate</h3>
+        <p class="method-desc">Document and build a professional portfolio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEEKLY EXPERIENCE -->
+<section class="section" data-od-id="weekly" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <p class="section-label reveal">Every Week</p>
+    <h2 class="section-title reveal">THE WEEKLY CLASS EXPERIENCE.</h2>
+    <div class="weekly-grid">
+      <div class="weekly-card reveal">
+        <p class="weekly-day">Day 01</p>
+        <h3 class="weekly-title">Theory</h3>
+        <p class="weekly-desc">Understand the creative concept.</p>
+      </div>
+      <div class="weekly-card reveal reveal-delay-1">
+        <p class="weekly-day">Day 02</p>
+        <h3 class="weekly-title">Exploration</h3>
+        <p class="weekly-desc">Study references and tools.</p>
+      </div>
+      <div class="weekly-card reveal reveal-delay-2">
+        <p class="weekly-day">Day 03</p>
+        <h3 class="weekly-title">Practice</h3>
+        <p class="weekly-desc">Create and experiment.</p>
+      </div>
+      <div class="weekly-card reveal reveal-delay-3">
+        <p class="weekly-day">Day 04</p>
+        <h3 class="weekly-title">Case Study + Critique</h3>
+        <p class="weekly-desc">Analyze professional work and receive feedback.</p>
+      </div>
+    </div>
+    <div class="weekly-stat reveal" style="margin-top:24px;justify-content:center;gap:48px;display:flex">
+      <span><strong>2 Hours</strong> per day</span>
+      <span><strong>4 Days</strong> per week</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" data-od-id="projects" id="projects">
+  <div class="section-inner">
+    <p class="section-label reveal">What You Build</p>
+    <h2 class="section-title reveal">DON'T JUST LEARN.<br>BUILD.</h2>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-visual"><span class="project-visual-num">01</span></div>
+        <div class="project-info">
+          <p class="project-tag">Project</p>
+          <h3 class="project-name">AI Visual Concept</h3>
+          <p class="project-desc">Create a visual concept using design principles and AI tools.</p>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-visual"><span class="project-visual-num">02</span></div>
+        <div class="project-info">
+          <p class="project-tag">Project</p>
+          <h3 class="project-name">Photographic Moodboard</h3>
+          <p class="project-desc">Build a complete visual moodboard and photographic concept.</p>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-visual"><span class="project-visual-num">03</span></div>
+        <div class="project-info">
+          <p class="project-tag">Project</p>
+          <h3 class="project-name">AI Commercial Photoshoot</h3>
+          <p class="project-desc">Direct and produce a commercial AI photoshoot from concept to final.</p>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-3">
+        <div class="project-visual"><span class="project-visual-num">04</span></div>
+        <div class="project-info">
+          <p class="project-tag">Project</p>
+          <h3 class="project-name">AI Brand Campaign</h3>
+          <p class="project-desc">Design a complete AI-powered advertising campaign with visual direction.</p>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-visual"><span class="project-visual-num">05</span></div>
+        <div class="project-info">
+          <p class="project-tag">Project</p>
+          <h3 class="project-name">AI Cinematic Video</h3>
+          <p class="project-desc">Produce an AI-generated cinematic video with direction and motion.</p>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-visual"><span class="project-visual-num">06</span></div>
+        <div class="project-info">
+          <p class="project-tag">Project</p>
+          <h3 class="project-name">Social Media Content System</h3>
+          <p class="project-desc">Build a repeatable content system for social platforms.</p>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-visual"><span class="project-visual-num">07</span></div>
+        <div class="project-info">
+          <p class="project-tag">Project</p>
+          <h3 class="project-name">Portfolio Case Study</h3>
+          <p class="project-desc">Document and present a complete creative case study.</p>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-3">
+        <div class="project-visual"><span class="project-visual-num">08</span></div>
+        <div class="project-info">
+          <p class="project-tag">Project</p>
+          <h3 class="project-name">Final Creative Project</h3>
+          <p class="project-desc">The capstone project combining everything learned into one portfolio piece.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="section" data-od-id="portfolio" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <p class="section-label reveal">The Outcome</p>
+    <h2 class="section-title reveal">THE FINAL PRODUCT IS NOT A CERTIFICATE.<br>IT'S WHAT YOU CAN SHOW.</h2>
+    <p class="section-subtitle reveal">Every assignment is designed to become a potential portfolio project.</p>
+    <div class="portfolio-layout reveal">
+      <div class="portfolio-steps">
+        <div class="portfolio-step"><span class="portfolio-step-num">01</span><span class="portfolio-step-text">Research</span></div>
+        <div class="portfolio-step"><span class="portfolio-step-num">02</span><span class="portfolio-step-text">Moodboards</span></div>
+        <div class="portfolio-step"><span class="portfolio-step-num">03</span><span class="portfolio-step-text">Concepts</span></div>
+        <div class="portfolio-step"><span class="portfolio-step-num">04</span><span class="portfolio-step-text">Creative Direction</span></div>
+        <div class="portfolio-step"><span class="portfolio-step-num">05</span><span class="portfolio-step-text">Process</span></div>
+        <div class="portfolio-step"><span class="portfolio-step-num">06</span><span class="portfolio-step-text">AI Workflow</span></div>
+        <div class="portfolio-step"><span class="portfolio-step-num">07</span><span class="portfolio-step-text">Final Results</span></div>
+        <div class="portfolio-step"><span class="portfolio-step-num">08</span><span class="portfolio-step-text">Case Studies</span></div>
+      </div>
+      <div class="portfolio-preview">
+        <div class="portfolio-preview-cell">Moodboard</div>
+        <div class="portfolio-preview-cell">Concept</div>
+        <div class="portfolio-preview-cell">Process</div>
+        <div class="portfolio-preview-cell">Final Result</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSE DETAILS / PRICING -->
+<section class="section" data-od-id="pricing" id="pricing">
+  <div class="section-inner">
+    <p class="section-label reveal">Program Details</p>
+    <h2 class="section-title reveal">EVERYTHING YOU NEED TO KNOW.</h2>
+    <div class="pricing-grid">
+      <div class="pricing-item reveal">
+        <p class="pricing-value">8</p>
+        <p class="pricing-label">Weeks</p>
+      </div>
+      <div class="pricing-item reveal reveal-delay-1">
+        <p class="pricing-value">4</p>
+        <p class="pricing-label">Days / Week</p>
+      </div>
+      <div class="pricing-item reveal reveal-delay-2">
+        <p class="pricing-value">2h</p>
+        <p class="pricing-label">Per Day</p>
+      </div>
+      <div class="pricing-item reveal reveal-delay-3">
+        <p class="pricing-value">Online</p>
+        <p class="pricing-label">Format</p>
+      </div>
+    </div>
+    <div class="pricing-highlight reveal">
+      <p class="pricing-highlight-value">PKR 3,000</p>
+      <p class="pricing-highlight-label">per month</p>
+      <a href="register.html" class="btn btn-primary">Apply for the Program</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" data-od-id="contact" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <p class="section-label reveal">Get in Touch</p>
+    <h2 class="section-title reveal">HAVE QUESTIONS?</h2>
+    <div class="contact-layout reveal">
+      <div class="contact-info">
+        <p class="section-subtitle">Want to know more about the program? Contact us directly on WhatsApp.</p>
+        <p class="contact-phone">+92 310 2589166</p>
+      </div>
+      <div class="contact-card">
+        <p>Ready to start your creative journey? We're here to help you take the first step.</p>
+        <a href="https://wa.me/923102589166" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" data-od-id="faq" id="faq">
+  <div class="section-inner">
+    <p class="section-label reveal">Common Questions</p>
+    <h2 class="section-title reveal">FAQ.</h2>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">What is AI Visual Creator?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">An 8-week practical creative program focused on design thinking, AI-powered visual production and portfolio building.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">Who is this course for?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">Graphic designers, students, creators, photographers, video creators, freelancers and anyone interested in creating professional visual content using AI.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">Do I need prior AI experience?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">No. The program starts with design and creative foundations before moving into advanced AI workflows.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">Do I need to be a graphic designer?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">No. However, the course teaches design principles because strong visual thinking is essential for creating professional AI content.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">How many hours are the classes?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">2 hours per day, 4 days per week.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">How long is the program?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">8 weeks.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">What is the fee?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">PKR 3,000 per month.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">Will I build a portfolio?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">Yes. Portfolio development is integrated into the entire program.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question" aria-expanded="false">What tools will be used?<span class="faq-icon">+</span></button>
+        <div class="faq-answer" role="region"><div class="faq-answer-inner">The program explores different AI tools and creative workflows. Tools may evolve over time, but the focus is on transferable creative thinking and production skills.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="section final-cta" data-od-id="final-cta">
+  <p class="section-label reveal">Start Now</p>
+  <h2 class="section-title reveal" style="font-size:clamp(32px,5vw,56px)">THE TOOLS WILL CHANGE.<br>YOUR CREATIVE THINKING SHOULDN'T.</h2>
+  <p class="section-subtitle reveal">Start building the skills to think, direct and create in the age of AI.</p>
+  <div class="final-cta-actions reveal">
+    <a href="register.html" class="btn btn-primary">Apply for the Program</a>
+    <a href="https://wa.me/923102589166" target="_blank" rel="noopener" class="btn btn-outline">Chat on WhatsApp</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" data-od-id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="nav-logo" style="font-size:16px">AI VISUAL <span style="color:var(--accent)">CREATOR</span></p>
+      <p>From Creative Thinking to AI-Powered Visual Production.</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Program</p>
+      <a href="#program">Curriculum</a>
+      <a href="#projects">Projects</a>
+      <a href="register.html">Register</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Support</p>
+      <a href="#faq">FAQ</a>
+      <a href="https://wa.me/923102589166" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Contact</p>
+      <a href="tel:+923102589166">+92 310 2589166</a>
+      <a href="https://wa.me/923102589166" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 AI VISUAL CREATOR. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+(function(){
+  var nav=document.querySelector('.navbar');
+  var lastScroll=0;
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY;
+    nav.classList.toggle('scrolled',y>40);
+    lastScroll=y;
+  },{passive:true});
+})();
+
+// Mobile menu
+(function(){
+  var btn=document.querySelector('.nav-hamburger');
+  var menu=document.querySelector('.mobile-menu');
+  if(!btn||!menu)return;
+  btn.addEventListener('click',function(){
+    var open=menu.classList.toggle('open');
+    btn.classList.toggle('active',open);
+    btn.setAttribute('aria-expanded',String(open));
+    document.body.style.overflow=open?'hidden':'';
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){
+      menu.classList.remove('open');
+      btn.classList.remove('active');
+      btn.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+    });
+  });
+})();
+
+// Scroll reveal
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('visible')});return}
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+  },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(function(e){obs.observe(e)});
+})();
+
+// FAQ accordion
+(function(){
+  document.querySelectorAll('.faq-question').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var item=btn.closest('.faq-item');
+      var isOpen=item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');i.querySelector('.faq-question').setAttribute('aria-expanded','false')});
+      if(!isOpen){item.classList.add('open');btn.setAttribute('aria-expanded','true')}
+    });
+  });
+})();
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var target=document.querySelector(a.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
+  });
+});
+</script>
+</body>
+</html>

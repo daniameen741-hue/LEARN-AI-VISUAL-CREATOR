@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register — AI VISUAL CREATOR</title>
+<meta name="description" content="Apply for the AI VISUAL CREATOR 8-week creative program. Start your journey from creative thinking to AI-powered visual production.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0A;
+  --surface:#141414;
+  --surface-elevated:#1A1A1A;
+  --surface-glass:rgba(255,255,255,0.03);
+  --fg:#F0F0F0;
+  --fg-dim:#9A9A9A;
+  --muted:#6B6B6B;
+  --border:rgba(255,255,255,0.06);
+  --border-strong:rgba(255,255,255,0.12);
+  --accent:#E8652A;
+  --accent-glow:rgba(232,101,42,0.15);
+  --accent-hover:#F07030;
+  --danger:#E8544A;
+  --success:#3DA35A;
+  --font-display:'Clash Display',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --max-w:720px;
+  --radius:16px;
+  --radius-sm:10px;
+  --radius-xs:6px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── NAVBAR ── */
+.navbar{position:sticky;top:0;z-index:1000;padding:0 24px;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-0.01em}
+.nav-logo span{color:var(--accent)}
+.nav-back{font-size:14px;color:var(--fg-dim);display:flex;align-items:center;gap:6px;transition:color 0.2s}
+.nav-back:hover{color:var(--fg)}
+.nav-back svg{width:16px;height:16px}
+
+/* ── FORM PAGE ── */
+.form-page{max-width:var(--max-w);margin:0 auto;padding:60px 24px 120px}
+.form-header{text-align:center;margin-bottom:56px}
+.form-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.form-title{font-family:var(--font-display);font-size:clamp(32px,5vw,48px);font-weight:600;letter-spacing:-0.02em;line-height:1.08;margin-bottom:16px}
+.form-subtitle{font-size:17px;color:var(--fg-dim);line-height:1.6;max-width:480px;margin:0 auto}
+
+/* ── FORM FIELDS ── */
+.form-group{margin-bottom:28px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:540px){.form-row{grid-template-columns:1fr}}
+.form-label-text{display:block;font-size:13px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--fg);margin-bottom:8px}
+.form-label-text .required{color:var(--accent);margin-left:2px}
+.form-input,.form-select,.form-textarea{width:100%;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--fg);font-family:var(--font-body);font-size:15px;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--muted)}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236B6B6B'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:16px;padding-right:40px;cursor:pointer}
+.form-textarea{min-height:140px;resize:vertical;line-height:1.6}
+
+/* Conditional fields */
+.conditional-fields{display:none;margin-top:16px;padding:20px;background:var(--surface-glass);border:1px solid var(--border);border-radius:var(--radius-sm);animation:slideDown 0.3s ease}
+.conditional-fields.visible{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.conditional-fields .form-group{margin-bottom:16px}
+.conditional-fields .form-group:last-child{margin-bottom:0}
+
+/* Checkbox / Radio group */
+.choice-grid{display:flex;flex-wrap:wrap;gap:10px}
+.choice-item{position:relative}
+.choice-item input{position:absolute;opacity:0;width:0;height:0}
+.choice-label{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--border);border-radius:var(--radius-xs);font-size:14px;color:var(--fg-dim);cursor:pointer;transition:all 0.2s;user-select:none}
+.choice-label:hover{border-color:var(--border-strong);color:var(--fg)}
+.choice-item input:checked + .choice-label{border-color:var(--accent);color:var(--fg);background:var(--accent-glow)}
+.choice-item input:focus-visible + .choice-label{box-shadow:0 0 0 3px var(--accent-glow)}
+
+/* Consent */
+.consent-group{display:flex;align-items:flex-start;gap:12px;margin-top:32px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.consent-group input[type="checkbox"]{width:18px;height:18px;margin-top:2px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
+.consent-group label{font-size:14px;color:var(--fg-dim);line-height:1.55;cursor:pointer}
+.consent-group label a{color:var(--accent);text-decoration:underline}
+
+/* Submit */
+.form-submit{margin-top:32px}
+.form-submit .btn{width:100%;padding:16px;font-size:15px}
+.form-error{font-size:13px;color:var(--danger);margin-top:6px;display:none}
+.form-group.error .form-input,
+.form-group.error .form-select,
+.form-group.error .form-textarea{border-color:var(--danger)}
+.form-group.error .form-error{display:block}
+
+/* Success state */
+.success-state{display:none;text-align:center;padding:80px 24px}
+.success-state.visible{display:block}
+.success-icon{width:64px;height:64px;border-radius:50%;background:var(--success);margin:0 auto 24px;display:flex;align-items:center;justify-content:center}
+.success-icon svg{width:32px;height:32px;color:#fff}
+.success-title{font-family:var(--font-display);font-size:clamp(28px,4vw,40px);font-weight:600;letter-spacing:-0.02em;margin-bottom:12px}
+.success-text{font-size:17px;color:var(--fg-dim);line-height:1.6;max-width:480px;margin:0 auto 32px}
+.form-wrapper.hidden{display:none}
+
+/* ── FOOTER MINI ── */
+.footer-mini{border-top:1px solid var(--border);padding:24px;text-align:center;font-size:13px;color:var(--muted)}
+.footer-mini a{color:var(--fg-dim);transition:color 0.2s}
+.footer-mini a:hover{color:var(--fg)}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" data-od-id="register-nav">
+  <a href="landing.html" class="nav-logo" aria-label="AI VISUAL CREATOR home">AI VISUAL <span>CREATOR</span></a>
+  <a href="landing.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to Program
+  </a>
+</nav>
+
+<!-- FORM -->
+<div class="form-page" data-od-id="register-form">
+  <div class="form-header">
+    <p class="form-label">Application</p>
+    <h1 class="form-title">START YOUR CREATIVE JOURNEY.</h1>
+    <p class="form-subtitle">Tell us a little about yourself so we can understand who is joining the program.</p>
+  </div>
+
+  <div class="form-wrapper" id="formWrapper">
+    <form id="registrationForm" novalidate>
+
+      <!-- Full Name -->
+      <div class="form-group" data-validate="required">
+        <label class="form-label-text" for="fullName">Full Name <span class="required">*</span></label>
+        <input class="form-input" type="text" id="fullName" name="fullName" placeholder="Your full name" required autocomplete="name">
+        <p class="form-error">Please enter your full name.</p>
+      </div>
+
+      <!-- Gender + WhatsApp -->
+      <div class="form-row">
+        <div class="form-group" data-validate="required">
+          <label class="form-label-text" for="gender">Gender <span class="required">*</span></label>
+          <select class="form-select" id="gender" name="gender" required>
+            <option value="" disabled selected>Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="prefer-not-to-say">Prefer not to say</option>
+          </select>
+          <p class="form-error">Please select your gender.</p>
+        </div>
+        <div class="form-group" data-validate="required">
+          <label class="form-label-text" for="whatsapp">WhatsApp / Contact Number <span class="required">*</span></label>
+          <input class="form-input" type="tel" id="whatsapp" name="whatsapp" placeholder="+92 3XX XXXXXXX" required autocomplete="tel">
+          <p class="form-error">Please enter a valid contact number.</p>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group" data-validate="email">
+        <label class="form-label-text" for="email">Email Address <span class="required">*</span></label>
+        <input class="form-input" type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        <p class="form-error">Please enter a valid email address.</p>
+      </div>
+
+      <!-- Occupation -->
+      <div class="form-group" data-validate="required">
+        <label class="form-label-text" for="occupation">Occupation <span class="required">*</span></label>
+        <select class="form-select" id="occupation" name="occupation" required>
+          <option value="" disabled selected>Select your occupation</option>
+          <option value="student">Student</option>
+          <option value="employed">Employed</option>
+          <option value="freelancer">Freelancer</option>
+          <option value="business-owner">Business Owner</option>
+          <option value="content-creator">Content Creator</option>
+          <option value="designer">Designer</option>
+          <option value="photographer">Photographer</option>
+          <option value="video-creator">Video Creator</option>
+          <option value="other">Other</option>
+        </select>
+        <p class="form-error">Please select your occupation.</p>
+      </div>
+
+      <!-- Conditional: Education / Work Details -->
+      <div class="conditional-fields" id="conditional-education">
+        <div class="form-group" data-validate="required" id="field-study-what" style="display:none">
+          <label class="form-label-text" for="studyWhat">What do you study? <span class="required">*</span></label>
+          <input class="form-input" type="text" id="studyWhat" name="studyWhat" placeholder="e.g. Computer Science, Fine Arts">
+        </div>
+        <div class="form-group" data-validate="required" id="field-study-where" style="display:none">
+          <label class="form-label-text" for="studyWhere">Where do you study? <span class="required">*</span></label>
+          <input class="form-input" type="text" id="studyWhere" name="studyWhere" placeholder="e.g. University of Karachi">
+        </div>
+        <div class="form-group" data-validate="required" id="field-job" style="display:none">
+          <label class="form-label-text" for="jobTitle">What is your job or profession? <span class="required">*</span></label>
+          <input class="form-input" type="text" id="jobTitle" name="jobTitle" placeholder="e.g. Graphic Designer, Marketing Manager">
+        </div>
+        <div class="form-group" data-validate="required" id="field-industry" style="display:none">
+          <label class="form-label-text" for="industry">What industry do you work in? <span class="required">*</span></label>
+          <input class="form-input" type="text" id="industry" name="industry" placeholder="e.g. Advertising, Tech, Media">
+        </div>
+        <div class="form-group" data-validate="required" id="field-services" style="display:none">
+          <label class="form-label-text" for="services">What services do you provide? <span class="required">*</span></label>
+          <input class="form-input" type="text" id="services" name="services" placeholder="e.g. Logo design, Brand identity, Social media">
+        </div>
+        <div class="form-group" data-validate="required" id="field-about" style="display:none">
+          <label class="form-label-text" for="aboutSelf">Tell us briefly about yourself. <span class="required">*</span></label>
+          <textarea class="form-textarea" id="aboutSelf" name="aboutSelf" rows="3" placeholder="A few sentences about what you do..."></textarea>
+        </div>
+      </div>
+
+      <!-- Experience Level -->
+      <div class="form-group" data-validate="required">
+        <label class="form-label-text">Experience Level <span class="required">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-item"><input type="radio" id="exp-beginner" name="experience" value="complete-beginner" required><label class="choice-label" for="exp-beginner">Complete Beginner</label></div>
+          <div class="choice-item"><input type="radio" id="exp-basic" name="experience" value="beginner"><label class="choice-label" for="exp-basic">Beginner</label></div>
+          <div class="choice-item"><input type="radio" id="exp-intermediate" name="experience" value="intermediate"><label class="choice-label" for="exp-intermediate">Intermediate</label></div>
+          <div class="choice-item"><input type="radio" id="exp-advanced" name="experience" value="advanced"><label class="choice-label" for="exp-advanced">Advanced</label></div>
+        </div>
+        <p class="form-error">Please select your experience level.</p>
+      </div>
+
+      <!-- What do you want to learn most? -->
+      <div class="form-group" data-validate="required">
+        <label class="form-label-text">What do you want to learn most? <span class="required">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-item"><input type="checkbox" id="learn-design" name="learn" value="graphic-design"><label class="choice-label" for="learn-design">Graphic Design</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-ai-img" name="learn" value="ai-image-generation"><label class="choice-label" for="learn-ai-img">AI Image Generation</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-ai-vid" name="learn" value="ai-video-generation"><label class="choice-label" for="learn-ai-vid">AI Video Generation</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-photo" name="learn" value="photography"><label class="choice-label" for="learn-photo">Photography</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-cinema" name="learn" value="cinematography"><label class="choice-label" for="learn-cinema">Cinematography</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-color" name="learn" value="color-theory"><label class="choice-label" for="learn-color">Color Theory</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-prompt" name="learn" value="prompt-engineering"><label class="choice-label" for="learn-prompt">Prompt Engineering</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-retouch" name="learn" value="image-retouching"><label class="choice-label" for="learn-retouch">Image Retouching</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-social" name="learn" value="social-media-content"><label class="choice-label" for="learn-social">Social Media Content</label></div>
+          <div class="choice-item"><input type="checkbox" id="learn-portfolio" name="learn" value="portfolio-building"><label class="choice-label" for="learn-portfolio">Portfolio Building</label></div>
+        </div>
+        <p class="form-error">Please select at least one topic.</p>
+      </div>
+
+      <!-- Why do you want to join? -->
+      <div class="form-group" data-validate="required">
+        <label class="form-label-text" for="motivation">Why do you want to join? <span class="required">*</span></label>
+        <textarea class="form-textarea" id="motivation" name="motivation" rows="5" placeholder="Tell us what excites you about this program..." required></textarea>
+        <p class="form-error">Please tell us why you want to join.</p>
+      </div>
+
+      <!-- How did you hear about us? -->
+      <div class="form-group" data-validate="required">
+        <label class="form-label-text">How did you hear about this program? <span class="required">*</span></label>
+        <div class="choice-grid">
+          <div class="choice-item"><input type="radio" id="referral-instagram" name="referral" value="instagram" required><label class="choice-label" for="referral-instagram">Instagram</label></div>
+          <div class="choice-item"><input type="radio" id="referral-whatsapp" name="referral" value="whatsapp"><label class="choice-label" for="referral-whatsapp">WhatsApp</label></div>
+          <div class="choice-item"><input type="radio" id="referral-facebook" name="referral" value="facebook"><label class="choice-label" for="referral-facebook">Facebook</label></div>
+          <div class="choice-item"><input type="radio" id="referral-friend" name="referral" value="friend"><label class="choice-label" for="referral-friend">Friend</label></div>
+          <div class="choice-item"><input type="radio" id="referral-other" name="referral" value="other"><label class="choice-label" for="referral-other">Other</label></div>
+        </div>
+        <p class="form-error">Please select how you heard about us.</p>
+      </div>
+
+      <!-- Consent -->
+      <div class="consent-group">
+        <input type="checkbox" id="consent" name="consent" required>
+        <label for="consent">I confirm that the information provided is accurate and I agree to be contacted regarding the AI VISUAL CREATOR program.</label>
+      </div>
+      <p class="form-error" id="consentError" style="margin-top:8px;display:none">Please confirm before submitting.</p>
+
+      <!-- Submit -->
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="submitBtn">Submit Application</button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Success State -->
+  <div class="success-state" id="successState">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2 class="success-title">APPLICATION RECEIVED.</h2>
+    <p class="success-text">Thank you for your interest in AI VISUAL CREATOR. We will review your information and contact you through WhatsApp or email with the next steps.</p>
+    <a href="landing.html" class="btn btn-outline">Back to Program</a>
+  </div>
+</div>
+
+<!-- FOOTER MINI -->
+<footer class="footer-mini" data-od-id="register-footer">
+  <p>&copy; 2026 AI VISUAL CREATOR. All rights reserved. &nbsp;·&nbsp; <a href="landing.html">Program</a> &nbsp;·&nbsp; <a href="https://wa.me/923102589166" target="_blank" rel="noopener">WhatsApp</a></p>
+</footer>
+
+<script>
+// Occupation conditional logic
+(function(){
+  var occ=document.getElementById('occupation');
+  var container=document.getElementById('conditional-education');
+  var fields={
+    student:['field-study-what','field-study-where'],
+    employed:['field-job','field-industry'],
+    freelancer:['field-services'],
+    other:['field-about']
+  };
+  var allFields=['field-study-what','field-study-where','field-job','field-industry','field-services','field-about'];
+
+  function updateFields(){
+    var val=occ.value;
+    allFields.forEach(function(id){document.getElementById(id).style.display='none'});
+    container.classList.remove('visible');
+    if(fields[val]){
+      container.classList.add('visible');
+      fields[val].forEach(function(id){document.getElementById(id).style.display='block'});
+    }
+  }
+  occ.addEventListener('change',updateFields);
+})();
+
+// Form validation and submission
+(function(){
+  var form=document.getElementById('registrationForm');
+  var wrapper=document.getElementById('formWrapper');
+  var success=document.getElementById('successState');
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var valid=true;
+
+    // Clear errors
+    form.querySelectorAll('.form-group').forEach(function(g){g.classList.remove('error')});
+    document.getElementById('consentError').style.display='none';
+
+    // Required text fields
+    var requiredInputs=form.querySelectorAll('[data-validate="required"]');
+    requiredInputs.forEach(function(group){
+      var input=group.querySelector('input[type="text"],input[type="tel"],select,textarea');
+      if(input&&input.offsetParent!==null&&!input.value.trim()){valid=false;group.classList.add('error')}
+    });
+
+    // Email
+    var emailGroup=form.querySelector('[data-validate="email"]');
+    var emailInput=emailGroup.querySelector('input');
+    if(emailInput&&emailInput.offsetParent!==null){
+      if(!emailInput.value.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)){valid=false;emailGroup.classList.add('error')}
+    }
+
+    // Experience radio
+    if(!form.querySelector('input[name="experience"]:checked')){
+      valid=false;
+    }
+
+    // Learn checkboxes
+    if(!form.querySelector('input[name="learn"]:checked')){
+      valid=false;
+    }
+
+    // Referral radio
+    if(!form.querySelector('input[name="referral"]:checked')){
+      valid=false;
+    }
+
+    // Consent
+    if(!document.getElementById('consent').checked){
+      valid=false;
+      document.getElementById('consentError').style.display='block';
+    }
+
+    if(!valid){
+      var firstError=form.querySelector('.form-group.error');
+      if(firstError)firstError.scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+
+    // Collect data
+    var data={};
+    var fd=new FormData(form);
+    for(var pair of fd.entries()){data[pair[0]]=pair[1]}
+    // Collect learn interests
+    data.learn=fd.getAll('learn');
+    data.submittedAt=new Date().toISOString();
+
+    console.log('Registration data:',data);
+
+    // Show success
+    wrapper.classList.add('hidden');
+    success.classList.add('visible');
+    success.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  // Clear error on input
+  form.querySelectorAll('.form-input,.form-select,.form-textarea').forEach(function(el){
+    el.addEventListener('input',function(){el.closest('.form-group').classList.remove('error')});
+    el.addEventListener('change',function(){el.closest('.form-group').classList.remove('error')});
+  });
+})();
+</script>
+</body>
+</html>
