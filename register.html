@@ -274,6 +274,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;o
         <button type="submit" class="btn btn-primary" id="submitBtn">Submit Application</button>
       </div>
 
+      <iframe id="hf" name="hf" style="display:none"></iframe>
     </form>
   </div>
 
@@ -373,53 +374,25 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;o
       return;
     }
 
-    // Collect data
-    var data={};
-    var fd=new FormData(form);
-    for(var pair of fd.entries()){data[pair[0]]=pair[1]}
-    data.learn=fd.getAll('learn');
-    data.submittedAt=new Date().toISOString();
-
     var SCRIPT_URL='https://script.google.com/macros/s/AKfycby52P5CKKJ9xrvQjlXqyhmR5a-syYQQGsbmBjEqZJkhlMOSaWpiUi0M7rA9OU6pUeY/exec';
 
     var submitBtn=document.getElementById('submitBtn');
     submitBtn.textContent='Submitting...';
     submitBtn.disabled=true;
 
-    // Flatten learn array for URL-encoded POST
-    var body='fullName='+encodeURIComponent(data.fullName||'');
-    body+='&gender='+encodeURIComponent(data.gender||'');
-    body+='&whatsapp='+encodeURIComponent(data.whatsapp||'');
-    body+='&email='+encodeURIComponent(data.email||'');
-    body+='&occupation='+encodeURIComponent(data.occupation||'');
-    body+='&studyWhat='+encodeURIComponent(data.studyWhat||'');
-    body+='&studyWhere='+encodeURIComponent(data.studyWhere||'');
-    body+='&jobTitle='+encodeURIComponent(data.jobTitle||'');
-    body+='&industry='+encodeURIComponent(data.industry||'');
-    body+='&services='+encodeURIComponent(data.services||'');
-    body+='&about='+encodeURIComponent(data.aboutSelf||'');
-    body+='&experience='+encodeURIComponent(data.experience||'');
-    body+='&referral='+encodeURIComponent(data.referral||'');
-    body+='&goals='+encodeURIComponent(data.motivation||'');
-    data.learn.forEach(function(l){body+='&learn='+encodeURIComponent(l)});
+    var iframe=document.getElementById('hf');
+    form.setAttribute('action',SCRIPT_URL);
+    form.setAttribute('method','POST');
+    form.setAttribute('target','hf');
 
-    fetch(SCRIPT_URL,{
-      method:'POST',
-      mode:'no-cors',
-      headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body:body
-    })
-    .then(function(){
+    iframe.onload=function(){
       wrapper.classList.add('hidden');
       success.classList.add('visible');
       success.scrollIntoView({behavior:'smooth',block:'start'});
-    })
-    .catch(function(err){
-      wrapper.classList.add('hidden');
-      success.classList.add('visible');
-      success.scrollIntoView({behavior:'smooth',block:'start'});
-      console.error('Submit note:',err);
-    });
+      iframe.onload=null;
+    };
+
+    form.submit();
   });
 
   // Clear error on input
