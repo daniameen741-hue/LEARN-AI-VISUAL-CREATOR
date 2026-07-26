@@ -377,16 +377,51 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;o
     var data={};
     var fd=new FormData(form);
     for(var pair of fd.entries()){data[pair[0]]=pair[1]}
-    // Collect learn interests
     data.learn=fd.getAll('learn');
     data.submittedAt=new Date().toISOString();
 
-    console.log('Registration data:',data);
+    // ← PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+    var SCRIPT_URL='YOUR_GOOGLE_APPS_SCRIPT_URL';
 
-    // Show success
-    wrapper.classList.add('hidden');
-    success.classList.add('visible');
-    success.scrollIntoView({behavior:'smooth',block:'start'});
+    var submitBtn=document.getElementById('submitBtn');
+    submitBtn.textContent='Submitting...';
+    submitBtn.disabled=true;
+
+    // Flatten learn array for URL-encoded POST
+    var body='fullName='+encodeURIComponent(data.fullName||'');
+    body+='&gender='+encodeURIComponent(data.gender||'');
+    body+='&whatsapp='+encodeURIComponent(data.whatsapp||'');
+    body+='&email='+encodeURIComponent(data.email||'');
+    body+='&occupation='+encodeURIComponent(data.occupation||'');
+    body+='&studyWhat='+encodeURIComponent(data.studyWhat||'');
+    body+='&studyWhere='+encodeURIComponent(data.studyWhere||'');
+    body+='&jobTitle='+encodeURIComponent(data.jobTitle||'');
+    body+='&industry='+encodeURIComponent(data.industry||'');
+    body+='&services='+encodeURIComponent(data.services||'');
+    body+='&about='+encodeURIComponent(data.about||'');
+    body+='&experience='+encodeURIComponent(data.experience||'');
+    body+='&referral='+encodeURIComponent(data.referral||'');
+    body+='&budget='+encodeURIComponent(data.budget||'');
+    body+='&goals='+encodeURIComponent(data.goals||'');
+    data.learn.forEach(function(l){body+='&learn='+encodeURIComponent(l)});
+
+    fetch(SCRIPT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:body
+    })
+    .then(function(r){return r.json()})
+    .then(function(res){
+      wrapper.classList.add('hidden');
+      success.classList.add('visible');
+      success.scrollIntoView({behavior:'smooth',block:'start'});
+    })
+    .catch(function(err){
+      submitBtn.textContent='Submit Application';
+      submitBtn.disabled=false;
+      alert('Something went wrong. Please try again or contact us on WhatsApp.');
+      console.error('Submit error:',err);
+    });
   });
 
   // Clear error on input
