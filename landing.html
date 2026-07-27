@@ -68,6 +68,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;o
 .nav-links{display:flex;align-items:center;gap:32px}
 .nav-links a{font-size:14px;font-weight:500;color:var(--fg-dim);letter-spacing:0.01em;transition:color 0.2s}
 .nav-links a:hover{color:var(--fg)}
+.nav-links a.active{color:var(--accent)}
+.nav-links a.active::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--accent);border-radius:1px;animation:nav-underline 0.3s ease-out}
+.nav-links a{position:relative}
 .nav-cta .btn{padding:10px 24px;font-size:12px}
 .nav-hamburger{display:none;flex-direction:column;gap:5px;width:28px;padding:4px 0}
 .nav-hamburger span{display:block;width:100%;height:1.5px;background:var(--fg);transition:all 0.3s;border-radius:1px}
@@ -76,7 +79,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;o
 .nav-hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
 .mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;bottom:0;background:rgba(10,10,10,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:999;padding:40px 24px;flex-direction:column;gap:0}
 .mobile-menu.open{display:flex}
-.mobile-menu a{font-family:var(--font-display);font-size:28px;font-weight:500;padding:16px 0;border-bottom:1px solid var(--border);display:block}
+.mobile-menu a{font-family:var(--font-display);font-size:28px;font-weight:500;padding:16px 0;border-bottom:1px solid var(--border);display:block;transition:color 0.2s}
+.mobile-menu a.active{color:var(--accent)}
 .mobile-menu .btn{margin-top:32px;width:100%;justify-content:center}
 @media(max-width:768px){
   .nav-links,.nav-cta{display:none}
@@ -283,6 +287,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;o
 .marquee-item{flex-shrink:0;display:flex;align-items:center;gap:12px;padding:0 32px;font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg-dim);white-space:nowrap}
 .marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:0.5}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes nav-underline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* ── STATS COUNTER ── */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:0;border-radius:var(--radius);overflow:hidden}
@@ -882,71 +887,6 @@ The future belongs to creators who know how to think—not just which tool to us
         <p class="journey-year">Mission</p>
         <h3 class="journey-title">Teaching the Next Generation</h3>
         <p class="journey-desc">Now focused on sharing this knowledge — helping others develop the creative thinking skills needed to thrive in the AI era.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS THAT BUILT THIS COURSE -->
-<section class="section" data-od-id="projects-showcase" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-  <div class="section-inner">
-    <p class="section-label reveal">Real Work</p>
-    <h2 class="section-title reveal">PROJECTS THAT BUILT THIS COURSE</h2>
-    <p class="section-subtitle reveal">This program is built on real creative experience, not theory.</p>
-    <div class="projects-showcase-grid">
-      <div class="showcase-card reveal">
-        <div class="showcase-visual"><span class="showcase-visual-num">01</span></div>
-        <div class="showcase-info">
-          <p class="showcase-tag">Brand Campaign</p>
-          <h3 class="showcase-name">Visual Identity System</h3>
-          <p class="showcase-desc">Complete brand identity and visual direction for a commercial campaign.</p>
-          <a href="#" target="_blank" rel="noopener" class="showcase-link">View Project →</a>
-        </div>
-      </div>
-      <div class="showcase-card reveal reveal-delay-1">
-        <div class="showcase-visual"><span class="showcase-visual-num">02</span></div>
-        <div class="showcase-info">
-          <p class="showcase-tag">AI Production</p>
-          <h3 class="showcase-name">Commercial Photoshoot</h3>
-          <p class="showcase-desc">AI-directed commercial photoshoot from concept to final delivery.</p>
-          <a href="#" target="_blank" rel="noopener" class="showcase-link">View Project →</a>
-        </div>
-      </div>
-      <div class="showcase-card reveal reveal-delay-2">
-        <div class="showcase-visual"><span class="showcase-visual-num">03</span></div>
-        <div class="showcase-info">
-          <p class="showcase-tag">Creative Direction</p>
-          <h3 class="showcase-name">Social Media Campaign</h3>
-          <p class="showcase-desc">End-to-end creative direction for a multi-platform social campaign.</p>
-          <a href="#" target="_blank" rel="noopener" class="showcase-link">View Project →</a>
-        </div>
-      </div>
-      <div class="showcase-card reveal">
-        <div class="showcase-visual"><span class="showcase-visual-num">04</span></div>
-        <div class="showcase-info">
-          <p class="showcase-tag">AI Video</p>
-          <h3 class="showcase-name">Cinematic Brand Film</h3>
-          <p class="showcase-desc">AI-generated cinematic video with professional direction and editing.</p>
-          <a href="#" target="_blank" rel="noopener" class="showcase-link">View Project →</a>
-        </div>
-      </div>
-      <div class="showcase-card reveal reveal-delay-1">
-        <div class="showcase-visual"><span class="showcase-visual-num">05</span></div>
-        <div class="showcase-info">
-          <p class="showcase-tag">Visual Identity</p>
-          <h3 class="showcase-name">Brand Guidelines</h3>
-          <p class="showcase-desc">Complete visual identity system with typography, color, and imagery guidelines.</p>
-          <a href="#" target="_blank" rel="noopener" class="showcase-link">View Project →</a>
-        </div>
-      </div>
-      <div class="showcase-card reveal reveal-delay-2">
-        <div class="showcase-visual"><span class="showcase-visual-num">06</span></div>
-        <div class="showcase-info">
-          <p class="showcase-tag">Production</p>
-          <h3 class="showcase-name">Product Launch Campaign</h3>
-          <p class="showcase-desc">Full creative production for a product launch — visuals, video, and social content.</p>
-          <a href="#" target="_blank" rel="noopener" class="showcase-link">View Project →</a>
-        </div>
       </div>
     </div>
   </div>
@@ -1615,6 +1555,37 @@ The future belongs to creators who know how to think—not just which tool to us
   },{passive:true});
 })();
 
+// Active nav highlighting
+(function(){
+  var links=document.querySelectorAll('.nav-links a[href^="#"]');
+  var mobileLinks=document.querySelectorAll('.mobile-menu a[href^="#"]');
+  if(!links.length)return;
+  var sections=[];
+  links.forEach(function(link){
+    var id=link.getAttribute('href').slice(1);
+    var el=document.getElementById(id);
+    if(el)sections.push({id:id,el:el,link:link});
+  });
+  if(!sections.length)return;
+  function update(){
+    var scrollY=window.scrollY+120;
+    var current=sections[0];
+    for(var i=0;i<sections.length;i++){
+      if(sections[i].el.offsetTop<=scrollY)current=sections[i];
+    }
+    links.forEach(function(l){l.classList.remove('active')});
+    mobileLinks.forEach(function(l){l.classList.remove('active')});
+    if(current){
+      current.link.classList.add('active');
+      mobileLinks.forEach(function(l){
+        if(l.getAttribute('href')==='#'+current.id)l.classList.add('active');
+      });
+    }
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  update();
+})();
+
 // Mobile menu
 (function(){
   var btn=document.querySelector('.nav-hamburger');
@@ -1662,8 +1633,10 @@ The future belongs to creators who know how to think—not just which tool to us
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
   a.addEventListener('click',function(e){
-    var target=document.querySelector(a.getAttribute('href'));
-    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
+    var href=a.getAttribute('href');
+    if(href==='#')return;
+    var target=document.querySelector(href);
+    if(target){e.preventDefault();var top=target.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:top,behavior:'smooth'})}
   });
 });
 
